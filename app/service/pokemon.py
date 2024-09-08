@@ -70,3 +70,14 @@ def get_pokemon_by_level(evolution_url: str, level: int) -> str:
         current_pokemon = current_pokemon["evolves_to"][0]
 
     return current_name
+
+
+def get_pokemon_gif(name: str) -> str:
+    url = f"https://pokeapi.co/api/v2/pokemon/{name}"
+
+    res = requests.get(url)
+    data = res.json()
+
+    gif = data["sprites"]["versions"]["generation-v"]["black-white"]["animated"]["front_default"]
+
+    return gif
