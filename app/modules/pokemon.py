@@ -7,7 +7,7 @@ def get_pokemon(name: str, xp: int) -> PokemonDTO:
     if not validation:
         exit(1)
 
-    pokemon: PokemonDTO = {"current_level_xp": 1050}
+    pokemon: PokemonDTO = {"current_level_xp": xp}
 
     pokemon['level'], pokemon["initial_level_xp"], pokemon["finally_level_xp"] = get_level(results["growth_url"], pokemon["current_level_xp"])
     pokemon["name"] = get_pokemon_by_level(results["evolution_url"], pokemon['level'])
