@@ -1,15 +1,17 @@
-from service.pokemon import get_primary_infos, get_level, get_pokemon_by_level, get_pokemon_gif
-from type.pokemon_service import PokemonDTO
+from modules.pokemon import get_pokemon
+import requests_cache
+from flask import Flask, request
 
-pokemon_name: str = "rattata"
-pokemon: PokemonDTO = {"current_level_xp": 1050}
+app = Flask(__name__)
+requests_cache.install_cache()
 
-results, validation = get_primary_infos(pokemon_name)
-if not validation:
-    exit(1)
+@app.route('/', methods=['GET'])
+def home():
+    args = request.args
 
-pokemon['level'], pokemon["initial_level_xp"], pokemon["finally_level_xp"] = get_level(results["growth_url"], pokemon["current_level_xp"])
-pokemon["name"] = get_pokemon_by_level(results["evolution_url"], pokemon['level'])
-pokemon["gif"] = get_pokemon_gif(pokemon["name"])
+    dto = get_pokemon(args.get("pokemon"), args.get("xp"))
+    return dto, 200
 
-print(pokemon)
+
+if __name__ == '__main__':
+    app.run(port=8088)

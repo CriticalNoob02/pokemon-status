@@ -1,1 +1,3 @@
 __pycache__/
+github_cache.sqlite
+http_cache.sqlite
