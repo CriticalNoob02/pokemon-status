@@ -1,5 +1,8 @@
 import requests
 from type.github_service import ReposDTO
+import os
+
+header = {"auth": os.environ.get("GITHUB_TOKEN", "Nada")}
 
 
 def get_repos(user: str) -> list[ReposDTO]:
@@ -9,18 +12,20 @@ def get_repos(user: str) -> list[ReposDTO]:
 
     while True:
         params = {'per_page': 100, 'page': page}
-        resp = requests.get(url, params=params)
+        resp = requests.get(url, params=params, headers=header)
+        resp.raise_for_status()
         data = resp.json()
 
-        if not repos:
+        if not data:
             break
 
-        dto: ReposDTO = {
-            "name": data["name"],
-            "stars": data["stargazers_count"],
-            # "language": data["language"]
-        }
-        repos.append(dto)
+        for r in data:
+            dto: ReposDTO = {
+                "name": r["name"],
+                "stars": r["stargazers_count"],
+            }
+            repos.append(dto)
+
         page += 1
 
     return repos
@@ -34,7 +39,8 @@ def commit_count(user: str, repo_name: str) -> int:
     while True:
         params = {'per_page': 100, 'page': page}
 
-        resp = requests.get(url, params=params)
+        resp = requests.get(url, params=params, headers=header)
+        resp.raise_for_status()
         data = resp.json()
 
         if not data:  # Se não houver mais commits, saímos do loop
@@ -48,6 +54,7 @@ def commit_count(user: str, repo_name: str) -> int:
 def get_followers(usuario):
     url = f'https://api.github.com/users/{usuario}'
 
-    resp = requests.get(url)
+    resp = requests.get(url, headers=header)
+    resp.raise_for_status()
     data = resp.json()
     return data.get('followers', 0)
