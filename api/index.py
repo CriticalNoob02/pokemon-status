@@ -7,7 +7,7 @@ load_dotenv("./infra/envs/.env")
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def render():
     args = request.args
     user = args.get("user") or "CriticalNoob02"
@@ -19,7 +19,3 @@ def render():
     svg_content = get_svg_banner(pokeDTO, theme)
 
     return Response(svg_content, mimetype='image/svg+xml')
-
-
-if __name__ == '__main__':
-    app.run()
