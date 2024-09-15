@@ -21,5 +21,10 @@ def render():
     return Response(svg_content, mimetype='image/svg+xml')
 
 
+@app.route('/aa', methods=['GET'])
+def render2():
+    return '<h1>Página da rota Contato</h1>'
+
+
 if __name__ == '__main__':
-    app.run(port=8088)
+    app.run()
