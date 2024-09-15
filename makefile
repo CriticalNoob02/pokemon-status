@@ -7,10 +7,10 @@ create-venv:
 
 install:
 	python3 -m pip install --upgrade pip
-	pip install -r infra/libs/requirements.txt
+	pip install -r requirements.txt
 
 clean:
 	find . -type d -name '__pycache__' -exec rm -r {} +
 
 run:
-	python3 "app/run.py"
+	python3 "api/run.py"
